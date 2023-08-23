@@ -1,0 +1,13 @@
+Package: MDcountrycode
+Title: Countrycode conversion and correspondence tables
+Version: 0.3.1
+Authors@R: person("Stefan", "Zeugner", email = "stefan.zeugner@ec.europa.eu", role = c("aut", "cre"))
+Description: Converts country codes between various standards (2letter, 3letter, name, numeric, etc.).
+Depends: R (>= 3.5.0)
+SystemRequirements: Java (>= 6)
+License: LGPL, GPL regarding the list of country name regex strings
+Encoding: UTF-8
+LazyData: true
+Imports: 
+Suggests: 
+RoxygenNote: 7.1.2
