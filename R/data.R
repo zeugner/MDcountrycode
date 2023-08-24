@@ -21,15 +21,4 @@
 #' data(dictccode)
 "dictccode"
 
-
-
-
-dictccode = suppressWarnings(read.csv('data/dictccode.csv',
-                     header=TRUE,row.names = NULL,stringsAsFactors=FALSE,
-                     blank.lines.skip = TRUE, na.strings = c('',':')))
-for (i in intersect(c('iso3n','un'),colnames(dictccode))) {
-  temp=suppressWarnings(as.integer(dictccode[[i]]))
-  temp[!is.na(temp)] = sprintf('%03d',temp[!is.na(temp)])
-  temp[is.na(temp)] = dictccode[[i]][is.na(temp)]
-  dictccode[[i]] = temp
-}; rm(temp,i)
+load('data/dictccode.rda')

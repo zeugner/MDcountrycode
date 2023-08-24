@@ -10,7 +10,7 @@
 #'
 #' @param sgroup the code of the group in Eurostat or ECB terms. E.g. 'EU', 'OECD' or 'EA19' (See Details). Note: sgroup is a singleton, thus only the first element of any vector is taken.
 #' @param time group members at that specific  year (as integer, like 2012) or date (as date or string like '2017-05-23'). If left empty, then current composition is returned. Note: time needs to be a singleton (only its first element is taken).
-#' @param ccode The format in which to return the members (such as \code{'iso2m'}). If left empty, then uses \code{\link{defaultcountrycode}}, resp. 'iso2m'
+#' @param ccodeas The format in which to return the members (such as \code{'iso2m'}, \code{'iso3c'} or \code{'ec'}). If left empty, then uses \code{\link{defaultcountrycode}}, resp. 'iso2m'
 #' @param fail if TRUE, requesting a non-existing sgroup generates an error. If FALSE, this would return a zer-length character instead
 #' @return a character vector with the country codes of group members currently (if \code{time} is unspecified), respectively with members as of the end of the period specfied in \code{time}
 #' @details See \code{\link{ccode}} for permissible values for ccode.
@@ -211,9 +211,9 @@ ccode = function (sourcevar, origin=NULL, destination=defaultcountrycode(), warn
 
   if (!length(origin)) {
     tryit=""
-    vecnchar=nchar(head(sourcevarorig,100))
+    vecnchar=nchar(utils::head(sourcevarorig,100))
     if (is.numeric(sourcevarorig)) tryit ='iso3n' else
-    if (!anyNA(suppressWarnings(as.numeric(head(sourcevarorig,100))))) tryit='iso3n' else
+    if (!anyNA(suppressWarnings(as.numeric(utils::head(sourcevarorig,100))))) tryit='iso3n' else
     if (mean(vecnchar==2)>.8) tryit = 'iso2m' else
     if (mean(vecnchar==3)>.8) tryit = 'iso3c' else
     if (mean(vecnchar>5)>.8) tryit = 'country.name'
@@ -529,7 +529,7 @@ countrycode_dict=.countrycode_dict()
 
 
 .codestandardguess = function(sourcevar,permitted=c("iso2c","iso3c","name.en")) {
-  sourcevar=head(sourcevar,200)
+  sourcevar=utils::head(sourcevar,200)
   if ("name.en" %in% permitted) if (mean(nchar(sourcevar),na.rm=TRUE)>5L) {
     tempn=ccode(sourcevar,origin = "name.en","iso2c",warn = FALSE, leaveifNA = FALSE)
     if (sum(!is.na(tempn)) > length(tempn)*.5) {return("name.en")}
@@ -561,7 +561,7 @@ countrycode_dict=.countrycode_dict()
   }
   if (!length(cols2fix)) { cols2fix=names(d1d)[grep("^[A-z]",names(d1d))] }
   for (mycol in cols2fix) {
-    if (length(permsrc)!=1L) convfrom = .codestandardguess(head(d1d[[mycol]],100L),permsrc) else convfrom=permsrc
+    if (length(permsrc)!=1L) convfrom = .codestandardguess(utils::head(d1d[[mycol]],100L),permsrc) else convfrom=permsrc
     if (length(convfrom)) d1d[[mycol]] =  ccode(d1d[[mycol]],convfrom,tocode,leaveifNA = TRUE,warn=FALSE)
   }
 
