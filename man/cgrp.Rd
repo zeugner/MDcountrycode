@@ -16,9 +16,9 @@ cgrp(
 
 \item{time}{group members at that specific  year (as integer, like 2012) or date (as date or string like '2017-05-23'). If left empty, then current composition is returned. Note: time needs to be a singleton (only its first element is taken).}
 
-\item{fail}{if TRUE, requesting a non-existing sgroup generates an error. If FALSE, this would return a zer-length character instead}
+\item{ccodeas}{The format in which to return the members (such as \code{'iso2m'}, \code{'iso3c'} or \code{'ec'}). If left empty, then uses \code{\link{defaultcountrycode}}, resp. 'iso2m'}
 
-\item{ccode}{The format in which to return the members (such as \code{'iso2m'}). If left empty, then uses \code{\link{defaultcountrycode}}, resp. 'iso2m'}
+\item{fail}{if TRUE, requesting a non-existing sgroup generates an error. If FALSE, this would return a zer-length character instead}
 }
 \value{
 a character vector with the country codes of group members currently (if \code{time} is unspecified), respectively with members as of the end of the period specfied in \code{time}
