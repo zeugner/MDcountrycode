@@ -11,7 +11,7 @@
 #' @param sgroup the code of the group in Eurostat or ECB terms. E.g. 'EU', 'OECD' or 'EA19' (See Details). Note: sgroup is a singleton, thus only the first element of any vector is taken.
 #' @param time group members at that specific  year (as integer, like 2012) or date (as date or string like '2017-05-23'). If left empty, then current composition is returned. Note: time needs to be a singleton (only its first element is taken).
 #' @param ccodeas The format in which to return the members (such as \code{'iso2m'}, \code{'iso3c'} or \code{'ec'}). If left empty, then uses \code{\link{defaultcountrycode}}, resp. 'iso2m'
-#' @param fail if TRUE, requesting a non-existing sgroup generates an error. If FALSE, this would return a zer-length character instead
+#' @param fail if TRUE, requesting a non-existing sgroup generates an error. If FALSE, this would return a zero-length character instead
 #' @return a character vector with the country codes of group members currently (if \code{time} is unspecified), respectively with members as of the end of the period specfied in \code{time}
 #' @details See \code{\link{ccode}} for permissible values for ccode.
 #' cgrp currently has variants for the following groups: euro area (EA, alias U2), European Union (EU, alias D0), OECD (A8), and EFTA (A5);
