@@ -1,6 +1,6 @@
 Package: MDcountrycode
 Title: Countrycode conversion and correspondence tables
-Version: 0.3.2
+Version: 0.3.3
 Authors@R: person("Stefan", "Zeugner", email = "stefan.zeugner@ec.europa.eu", role = c("aut", "cre"))
 Description: Converts country codes between various standards (2letter, 3letter, name, numeric, etc.) and provides country groups.
 Depends: R (>= 3.5.0)
