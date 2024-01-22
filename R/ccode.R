@@ -561,10 +561,10 @@ countrycode_dict=.countrycode_dict()
   }
   if (!length(cols2fix)) { cols2fix=names(d1d)[grep("^[A-z]",names(d1d))] }
   for (mycol in cols2fix) {
-    if (length(permsrc)!=1L) convfrom = .codestandardguess(utils::head(d1d[[mycol]],100L),permsrc) else convfrom=permsrc
+    if (length(permsrc)!=1L) convfrom = .codestandardguess(sample(d1d[[mycol]],200L),permsrc) else convfrom=permsrc
     if (length(convfrom)) d1d[[mycol]] =  ccode(d1d[[mycol]],convfrom,tocode,leaveifNA = TRUE,warn=FALSE)
   }
-
+  try(rownames(d1d) <- d1d[[1]],silent=TRUE)
   return(d1d)
 
 }
