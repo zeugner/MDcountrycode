@@ -185,6 +185,8 @@ cgrp=function (sgroup = c("EA", "EU", "OECD", "EFTA"),
 #' ccode(x3,'iso2c','iso2c') #even though Greece was named 'EL' rather than 'GR', ccode can deal with that
 #'
 #'
+#'ccode('CA','iso2m','ccy') #Canada has Canadian dollars
+#'
 #' @export
 ccode = function (sourcevar, origin=NULL, destination=defaultcountrycode(), warn = TRUE, custom_dict = NULL,
           custom_match = NULL, origin_regex = FALSE,leaveifNA = FALSE, strict=FALSE, verbose=TRUE)
