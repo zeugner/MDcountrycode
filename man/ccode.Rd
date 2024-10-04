@@ -83,6 +83,7 @@ There are four types of entities: existing countries and territories, former pol
   \item wits (to and from): 3-letter codes from Worldbank's World Integrated Trade Solution (variant of iso3c)
   \item ccy (to and from): 3-letter currency codes according to ISO 4217, such as \code{JPY} for Japan. Note that old currency codes such as FRF for French Franc are also matched.
 }
+Note that \code{2} is shorthand for \code{iso2m} and \code{3} is shorthand for \code{iso3c}
 }
 \section{Disclaimer}{
 
@@ -125,6 +126,13 @@ ccode(x2,'iso2c','sovereign', warn=FALSE) #Note the code change for Guadeloupe. 
 ccode(x2,'iso2c','sov', warn=FALSE, leaveifNA=TRUE) #leave the euro area code intact
 
 ccode(x3,'iso2c','iso2c') #even though Greece was named 'EL' rather than 'GR', ccode can deal with that
+
+
+ccode('CA','iso2m','ccy') #Canada has Canadian dollars
+
+
+ccode('CA',2,'ccy') #2 is shorthand for iso2m
+ccode(c('CA','MX'),2,3) #3 is shorthand for iso3c
 
 
 }

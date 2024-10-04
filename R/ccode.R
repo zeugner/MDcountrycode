@@ -139,6 +139,7 @@ cgrp=function (sgroup = c("EA", "EU", "OECD", "EFTA"),
 #'   \item wits (to and from): 3-letter codes from Worldbank's World Integrated Trade Solution (variant of iso3c)
 #'   \item ccy (to and from): 3-letter currency codes according to ISO 4217, such as \code{JPY} for Japan. Note that old currency codes such as FRF for French Franc are also matched.
 #' }
+#' Note that \code{2} is shorthand for \code{iso2m} and \code{3} is shorthand for \code{iso3c}
 #'
 #' @section Disclaimer:
 #'
@@ -187,6 +188,11 @@ cgrp=function (sgroup = c("EA", "EU", "OECD", "EFTA"),
 #'
 #'ccode('CA','iso2m','ccy') #Canada has Canadian dollars
 #'
+#'
+#'ccode('CA',2,'ccy') #2 is shorthand for iso2m
+#'ccode(c('CA','MX'),2,3) #3 is shorthand for iso3c
+#'
+#'
 #' @export
 ccode = function (sourcevar, origin=NULL, destination=defaultcountrycode(), warn = TRUE, custom_dict = NULL,
           custom_match = NULL, origin_regex = FALSE,leaveifNA = FALSE, strict=FALSE, verbose=TRUE)
@@ -231,6 +237,9 @@ ccode = function (sourcevar, origin=NULL, destination=defaultcountrycode(), warn
   if (is.na(match(origin,colnames(ddict)))) { origin=gsub('^regex','name',origin) }
   destination=colnames(ddict)[pmatch(destination,colnames(ddict))]
   origin     =colnames(ddict)[pmatch(origin,colnames(ddict))]
+  if (is.na(origin)) if (grepl('2',origorig)) { origin='iso2m' } else if (grepl('3',origorig)) { origin='iso3c' }
+  if (is.na(destination)) if (grepl('2',destinorig)) { destination='iso2m' } else if (grepl('3',destinorig)) { destination='iso3c' }
+
   if (is.na(origin)) { stop('origin code ', origorig, ' not available') }
   if (is.na(destination)) { stop('destination code ', destinorig, ' not available', ifelse(missing(destination),'Please check your defaultcountrycode option','')) }
 
