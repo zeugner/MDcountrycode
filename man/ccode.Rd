@@ -53,11 +53,13 @@ There are four types of entities: existing countries and territories, former pol
 
  The following code tables are available (for \code{origin} and \code{destination})
 \itemize{
+  \item 2 (to and from): same as\code{iso2m} below
+  \item 3 (to and from): same as\code{iso3c} below
   \item iso2m (to and from): ISO 2-letter country codes (\code{FR} for France). Complemented with Estat memnonics for country groups (such as \code{EU} for the EU) and institutions (such as \code{EIB} for the EIB)
   \item iso2c (to and from): ISO 2-letter country codes (\code{FR} for France). Complemented with ECB codes for country groups (format LETTER-DIGIT) and institutions (format DIGIT-LETTER)
   \item iso3c (to and from): ISO 3-letter country codes (\code{FRA} for France). Complemented with ECB codes for country groups (format LETTER-DIGIT such as D0 for the EU) and institutions (format DIGIT-LETTER such as 4C for the EIB)
   \item ecb (to and from): ECB convention very similar to \code{iso2c} (such as \code{FR} for France). Some peculiarities for entities that have ceased to exist (e.g. Yugoslavia). See \href{https://sdw.ecb.europa.eu/datastructure.do?conceptMnemonic=REF_AREA&datasetinstanceid=143}{ECB codelist}.
-  \item ec (to and from, alias eurostat): European Commission convention very similar to \code{iso2m}, i.e. ISO 2-letter country codes (\code{FR} for France) with an exception for Greece ('EL' instead of 'GR') and the UK ('UK' instead of 'GB'). See \href{https://webgate.ec.europa.eu/sdmxregistry/}{SDMX codelist registry}
+  \item ec (to and from, alias eu, eurostat, com, commission): European Commission convention very similar to \code{iso2m}, i.e. ISO 2-letter country codes (\code{FR} for France) with an exception for Greece ('EL' instead of 'GR') and the UK ('UK' instead of 'GB'). See \href{https://webgate.ec.europa.eu/sdmxregistry/}{SDMX codelist registry}
   \item sovereign (to): The existing sovereign state to which a territory belongs, as recognized by the majority of UN Member States (i.e, Britain, Jersey, and Bermuda all yield 'UK' as sovereign). For former entities, sovereign denotes the successor with the largest population (e.g. Russia in the case of the USSR)
   \item name.en (to and from, alias 'name' and 'country.name'): short English language name. Uses regular expression to convert from names (e.g. Belgium to BE)
   \item name.fr (to, alias country.name.fr): French-language name, as defined by Eurostat
@@ -74,7 +76,7 @@ There are four types of entities: existing countries and territories, former pol
   \item fips105 (to and from): FIPS 10-4 (Federal Information Processing Standard), similar to iso2c
   \item icao (to and from): ICAO (int'l civil air organization) code (when to: only first one relevant for a country is shown, when from: matches to largest population country within the ICAO area)
   \item imf (to and from): IMF numeric code
-  \item ioc (to and from): Int'l Olympic Comittee 3-letter code
+  \item ioc (to and from, alias olympic, sport): International Olympic Committee 3-letter code
   \item cowc (to and from): Correlates of War character code
   \item cown (to and from): Correlates of War numeric code
   \item ameco (to and from): AMECO database 3-letter code (variant of iso3c)
@@ -134,6 +136,11 @@ ccode('CA','iso2m','ccy') #Canada has Canadian dollars
 ccode('CA',2,'ccy') #2 is shorthand for iso2m
 ccode(c('CA','MX'),2,3) #3 is shorthand for iso3c
 
+
+ccode(cgrp('EU'),2,'name') #EU member names
+
+ccode(c('European Commission','ECB','IMF'),'name',2) #use the of some institutions to find their codes
+ccode(c('R4','R5','R6'),2,'name')
 
 }
 \seealso{

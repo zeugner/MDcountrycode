@@ -5,7 +5,7 @@
 \title{Get a vector of country group (e.g. euro area) members}
 \usage{
 cgrp(
-  sgroup = c("EA", "EU", "OECD", "EFTA"),
+  sgroup = c("EA", "EU", "OECD", "EFTA", "ASEAN", "G20", "OPEC", "G7", "NATO"),
   time = NULL,
   ccodeas = defaultcountrycode(),
   fail = TRUE
@@ -28,14 +28,16 @@ Get a vector of country group (e.g. euro area) members
 }
 \details{
 See \code{\link{ccode}} for permissible values for ccode.
-cgrp currently has variants for the following groups: euro area (EA, alias U2), European Union (EU, alias D0), OECD (A8), and EFTA (A5);
-The following shortcuts can also be used: EA11, EA12, EA17, EA18, EA19, EU12, EU15, EU25, EU27, EU28 respectively their ECB equivalents (D2, V3, V1, D3, EU12, I1, I2, I6, I7, I8)
+cgrp currently has variants for the following groups: euro area (EA, alias U2), European Union (EU, alias B0), OECD (P0), EFTA (R2), OPEC (R5), G7 (R23), NATO
+The following shortcuts can also be used: EA11, EA12, EA17, EA18, EA19, EU12, EU15, EU25, EU27, EU28 respectively their ECB equivalents (I1, I2, I6, I7, I8, B1, B2, B3, B6, B5)
 }
 \examples{
 cgrp("EA") #euro area members
 cgrp(EA)   #also works without quotes
 cgrp("EA", 2002) #euro area Members in 2012
 cgrp('U2', 2002) #same, using ECB instead of Estat code for euro area
+cgrp(G20, ccodeas=3) #3 letter codes for G20 countries (B0 is EU)
+
 cgrp('EA12') #shortcut: euro area with 12 Members
 cgrp('EU','2004-01-31') #EU Members at the start of 2004 (excludes 'new' member states)
 
@@ -46,6 +48,9 @@ cgrp('EFTA', 1995) #three countries had left EFTA as of 1995
 cgrp('EFTA', 1994, "name")
 
 cgrp('OECD', 2000, ccodeas="iso3c") #OECD countries in 2000
+setdiff(cgrp('NATO',2010), cgrp('EU',2010)) #NATO countries outside the EU in 2010
+cgrp(OPEC, 1974, ccodeas='name') #names of OPEC countries in 1974
+
 }
 \seealso{
 \code{\link{ccode}} for converting between country code conventions, \code{\link{countrycode_dict}} to set and change your own country groups

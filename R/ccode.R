@@ -14,14 +14,16 @@
 #' @param fail if TRUE, requesting a non-existing sgroup generates an error. If FALSE, this would return a zero-length character instead
 #' @return a character vector with the country codes of group members currently (if \code{time} is unspecified), respectively with members as of the end of the period specfied in \code{time}
 #' @details See \code{\link{ccode}} for permissible values for ccode.
-#' cgrp currently has variants for the following groups: euro area (EA, alias U2), European Union (EU, alias D0), OECD (A8), and EFTA (A5);
-#' The following shortcuts can also be used: EA11, EA12, EA17, EA18, EA19, EU12, EU15, EU25, EU27, EU28 respectively their ECB equivalents (D2, V3, V1, D3, EU12, I1, I2, I6, I7, I8)
+#' cgrp currently has variants for the following groups: euro area (EA, alias U2), European Union (EU, alias B0), OECD (P0), EFTA (R2), OPEC (R5), G7 (R23), NATO
+#' The following shortcuts can also be used: EA11, EA12, EA17, EA18, EA19, EU12, EU15, EU25, EU27, EU28 respectively their ECB equivalents (I1, I2, I6, I7, I8, B1, B2, B3, B6, B5)
 #' @seealso \code{\link{ccode}} for converting between country code conventions, \code{\link{countrycode_dict}} to set and change your own country groups
 #' @examples
 #' cgrp("EA") #euro area members
 #' cgrp(EA)   #also works without quotes
 #' cgrp("EA", 2002) #euro area Members in 2012
 #' cgrp('U2', 2002) #same, using ECB instead of Estat code for euro area
+#' cgrp(G20, ccodeas=3) #3 letter codes for G20 countries (B0 is EU)
+#'
 #' cgrp('EA12') #shortcut: euro area with 12 Members
 #' cgrp('EU','2004-01-31') #EU Members at the start of 2004 (excludes 'new' member states)
 #'
@@ -32,8 +34,11 @@
 #' cgrp('EFTA', 1994, "name")
 #'
 #' cgrp('OECD', 2000, ccodeas="iso3c") #OECD countries in 2000
+#' setdiff(cgrp('NATO',2010), cgrp('EU',2010)) #NATO countries outside the EU in 2010
+#' cgrp(OPEC, 1974, ccodeas='name') #names of OPEC countries in 1974
+#'
 #' @export
-cgrp=function (sgroup = c("EA", "EU", "OECD", "EFTA"),
+cgrp=function (sgroup = c("EA", "EU", "OECD", "EFTA", "ASEAN", "G20", "OPEC", "G7", "NATO"),
                 time = NULL, ccodeas = defaultcountrycode(), fail = TRUE)
 {
   if (missing(sgroup)) {
@@ -109,11 +114,13 @@ cgrp=function (sgroup = c("EA", "EU", "OECD", "EFTA"),
 #'
 #'  The following code tables are available (for \code{origin} and \code{destination})
 #' \itemize{
+#'   \item 2 (to and from): same as\code{iso2m} below
+#'   \item 3 (to and from): same as\code{iso3c} below
 #'   \item iso2m (to and from): ISO 2-letter country codes (\code{FR} for France). Complemented with Estat memnonics for country groups (such as \code{EU} for the EU) and institutions (such as \code{EIB} for the EIB)
 #'   \item iso2c (to and from): ISO 2-letter country codes (\code{FR} for France). Complemented with ECB codes for country groups (format LETTER-DIGIT) and institutions (format DIGIT-LETTER)
 #'   \item iso3c (to and from): ISO 3-letter country codes (\code{FRA} for France). Complemented with ECB codes for country groups (format LETTER-DIGIT such as D0 for the EU) and institutions (format DIGIT-LETTER such as 4C for the EIB)
 #'   \item ecb (to and from): ECB convention very similar to \code{iso2c} (such as \code{FR} for France). Some peculiarities for entities that have ceased to exist (e.g. Yugoslavia). See \href{https://sdw.ecb.europa.eu/datastructure.do?conceptMnemonic=REF_AREA&datasetinstanceid=143}{ECB codelist}.
-#'   \item ec (to and from, alias eurostat): European Commission convention very similar to \code{iso2m}, i.e. ISO 2-letter country codes (\code{FR} for France) with an exception for Greece ('EL' instead of 'GR') and the UK ('UK' instead of 'GB'). See \href{https://webgate.ec.europa.eu/sdmxregistry/}{SDMX codelist registry}
+#'   \item ec (to and from, alias eu, eurostat, com, commission): European Commission convention very similar to \code{iso2m}, i.e. ISO 2-letter country codes (\code{FR} for France) with an exception for Greece ('EL' instead of 'GR') and the UK ('UK' instead of 'GB'). See \href{https://webgate.ec.europa.eu/sdmxregistry/}{SDMX codelist registry}
 #'   \item sovereign (to): The existing sovereign state to which a territory belongs, as recognized by the majority of UN Member States (i.e, Britain, Jersey, and Bermuda all yield 'UK' as sovereign). For former entities, sovereign denotes the successor with the largest population (e.g. Russia in the case of the USSR)
 #'   \item name.en (to and from, alias 'name' and 'country.name'): short English language name. Uses regular expression to convert from names (e.g. Belgium to BE)
 #'   \item name.fr (to, alias country.name.fr): French-language name, as defined by Eurostat
@@ -130,7 +137,7 @@ cgrp=function (sgroup = c("EA", "EU", "OECD", "EFTA"),
 #'   \item fips105 (to and from): FIPS 10-4 (Federal Information Processing Standard), similar to iso2c
 #'   \item icao (to and from): ICAO (int'l civil air organization) code (when to: only first one relevant for a country is shown, when from: matches to largest population country within the ICAO area)
 #'   \item imf (to and from): IMF numeric code
-#'   \item ioc (to and from): Int'l Olympic Comittee 3-letter code
+#'   \item ioc (to and from, alias olympic, sport): International Olympic Committee 3-letter code
 #'   \item cowc (to and from): Correlates of War character code
 #'   \item cown (to and from): Correlates of War numeric code
 #'   \item ameco (to and from): AMECO database 3-letter code (variant of iso3c)
@@ -186,12 +193,17 @@ cgrp=function (sgroup = c("EA", "EU", "OECD", "EFTA"),
 #' ccode(x3,'iso2c','iso2c') #even though Greece was named 'EL' rather than 'GR', ccode can deal with that
 #'
 #'
-#'ccode('CA','iso2m','ccy') #Canada has Canadian dollars
+#' ccode('CA','iso2m','ccy') #Canada has Canadian dollars
 #'
 #'
-#'ccode('CA',2,'ccy') #2 is shorthand for iso2m
-#'ccode(c('CA','MX'),2,3) #3 is shorthand for iso3c
+#' ccode('CA',2,'ccy') #2 is shorthand for iso2m
+#' ccode(c('CA','MX'),2,3) #3 is shorthand for iso3c
 #'
+#'
+#' ccode(cgrp('EU'),2,'name') #EU member names
+#'
+#' ccode(c('European Commission','ECB','IMF'),'name',2) #use the of some institutions to find their codes
+#' ccode(c('R4','R5','R6'),2,'name')
 #'
 #' @export
 ccode = function (sourcevar, origin=NULL, destination=defaultcountrycode(), warn = TRUE, custom_dict = NULL,
@@ -232,8 +244,12 @@ ccode = function (sourcevar, origin=NULL, destination=defaultcountrycode(), warn
   origin = gsub('^name','regex',gsub("^country\\.name","name",trimws(tolower(origin))))
   origin =origin[[1]];
   if (origin=='regex') { origin='regex.en'}
-  if (origin %in% c('eurostat','estat')) {origin='ec'}
-  if (destination %in% c('eurostat','estat')) {destination='ec'}
+  if (origin %in% c('eurostat','estat','commission','com','eu')) {origin='ec'}
+  if (destination %in% c('eurostat','estat','commission','com','eu')) {destination='ec'}
+  if (origin %in% c('sport','sports','olympic')) {origin='ioc'}
+  if (destination %in% c('sport','sports','olympic')) {destination='ioc'}
+
+
   if (is.na(match(origin,colnames(ddict)))) { origin=gsub('^regex','name',origin) }
   destination=colnames(ddict)[pmatch(destination,colnames(ddict))]
   origin     =colnames(ddict)[pmatch(origin,colnames(ddict))]
@@ -403,12 +419,22 @@ defaultcountrycode =function(x)  {
     G20 = c(AR='1999-09-26', AU='1999-09-26', BR='1999-09-26', CA='1999-09-26', CN='1999-09-26', FR='1999-09-26',
             DE='1999-09-26', IN='1999-09-26', ID='1999-09-26', IT='1999-09-26', JP='1999-09-26', KR='1999-09-26',
             MX='1999-09-26', RU='1999-09-26', SA='1999-09-26', ZA='1999-09-26', TR='1999-09-26', GB='1999-09-26',
-            US='1999-09-26', D0='1999-09-26'),
+            US='1999-09-26', B0='1999-09-26'),
 
     OPEC = c(DZ='1969-01-01', AO='2007-01-01', CG='2018-01-01', EC='1973-01-01', '!EC'='1992-01-01','EC'='2007-01-01',
              '!EC'='2020-01-01', GQ='2017-01-01', GA='1975-01-01', '!GA'='1995-01-01', GA='2016-01-01', IR='1960-01-01',
              IQ='1960-01-01', KW='1960-01-01', LY='1962-01-01', NG='1971-01-01', SA='1960-01-01', AE='1967-01-01',
-             VE='1960-01-01', ID='1962-01-01', '!ID'='2008-01-01', QA='1961-01-01', '!QA'='2019-01-01')
+             VE='1960-01-01', ID='1962-01-01', '!ID'='2008-01-01', QA='1961-01-01', '!QA'='2019-01-01'),
+
+    G7  =  c(US='1977-01-01', DE='1977-01-01', JP='1977-01-01', FR='1977-01-01', GB='1977-01-01', IT='1977-01-01', CA='1977-01-01'),
+
+    NATO=  c(AL='2009-04-01', BE='1949-08-24', BG='2004-03-29', CA='1949-08-24', HR='2009-04-01', CZ='1999-03-12',
+             DK='1949-08-24', EE='2004-03-29', FI='2023-04-04', FR='1949-08-24', DE='1955-05-06', GR='1952-02-18',
+             HU='1999-03-12', IS='1949-08-24', IT='1949-08-24', LV='2004-03-29', LT='2004-03-29', LU='1949-08-24',
+             ME='2017-06-05', NL='1949-08-24', MK='2020-03-27', NO='1949-08-24', PL='1999-03-12', PT='1949-08-24',
+             RO='2004-03-29', SK='2004-03-29', SI='2004-03-29', ES='1982-05-30', SE='2024-03-07', TR='1952-02-18',
+             GB='1949-08-24', US='1949-08-24')
+
   )
 
   grpsubset=function(mycode,refyear) {
